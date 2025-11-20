@@ -97,26 +97,28 @@ export default function NotesList() {
       <FlatList
         data={filtered}
         keyExtractor={(i) => i.id}
-        contentContainerStyle={{ paddingBottom: 140 }}
+        contentContainerStyle={{
+          paddingBottom: 140,
+          flexGrow: 1,
+        }}
         renderItem={({ item }) => (
           <NoteItem note={item} onDelete={() => deleteNote(item.id)} />
         )}
         ListEmptyComponent={() => (
-          <View style={{ padding: 20 }}>
-            <Text style={{ color: colors.blueFallback, fontWeight: "600" }}>
-              {query
-                ? "No results found."
-                : "No notes yet — tap + to create one."}
+          <View style={styles.empty}>
+            <Text style={[styles.emptyText, { color: colors.blueFallback }]}>
+              {query ? "No results found." : "No notes added yet"}
             </Text>
           </View>
         )}
       />
 
+      {/* Only ONE FAB button - removed duplicate styling */}
       <Link href="/note/new" asChild>
-        <TouchableOpacity
-          style={[styles.fab, { backgroundColor: colors.primary }]}
-        >
-          <Text style={{ color: "#fff", fontSize: 26 }}>+</Text>
+        <TouchableOpacity style={styles.fab}>
+          <Text style={{ color: "blue", fontSize: 32, fontWeight: "900" }}>
+            +
+          </Text>
         </TouchableOpacity>
       </Link>
 
@@ -135,7 +137,7 @@ export default function NotesList() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   header: {
-    paddingTop: Platform.OS === "ios" ? 44 : 100,
+    paddingTop: Platform.OS === "ios" ? 44 : 50,
     paddingHorizontal: 18,
     paddingBottom: 12,
     flexDirection: "row",
@@ -154,17 +156,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
   },
+  empty: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 50, // adjust for perfect center below header
+  },
+  emptyText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
   searchInput: { flex: 1, fontSize: 16 },
   clearBtn: { paddingHorizontal: 8 },
   fab: {
     position: "absolute",
     right: 20,
     bottom: 30,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 68,
+    height: 68,
+    borderRadius: 34,
     alignItems: "center",
     justifyContent: "center",
-    elevation: 6,
+    elevation: 10,
+    backgroundColor: "#fff",
+    borderWidth: 2,
+    borderColor: "blue", // Use a fixed color or get from theme
   },
 });
